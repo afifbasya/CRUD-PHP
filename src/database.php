@@ -1,46 +1,48 @@
 <?php
 
-class database
+class Database
 {
+    //property
+    public $host = "database";
+    public $username = "root";
+    public $pass = "password";
+    public $db = "docker_php";
+    public $connect;
 
-	public $host = "database";
-	public $username = "root";
-	public $pass = "password";
-	public $db = "docker_php";
-	public $connect;
+    function __construct()
+    {
+        $this->connect = mysqli_connect($this->host, $this->username, $this->pass);
+        mysqli_select_db($this->connect, $this->db);
+    }
 
-	function __construct()
-	{
-		$this->connect = mysqli_connect($this->host, $this->username, $this->pass);
-		mysqli_select_db($this->connect, $this->db);
-	}
+    function tampil_data()
+    {
+        $data = mysqli_query($this->connect, "SELECT * FROM user");
+        $rows = mysqli_fetch_all($data, MYSQLI_ASSOC);
 
-	function tampil_data()
-	{
-		$data = mysqli_query($this->connect, "select * from user");
-		$rows = mysqli_fetch_all($data, MYSQLI_ASSOC);
-		return $rows;
-	}
+        return $rows;
+    }
 
-	function input($nama, $alamat, $nohp)
-	{
-		mysqli_query($this->connect, "insert into user values(NULL,'$nama','$alamat','$nohp')");
-	}
+    function tambah_data($nama, $alamat, $nohp)
+    {
+        mysqli_query($this->connect, "INSERT INTO user VALUES (NULL, '$nama', '$alamat', '$nohp')");
+    }
 
-	function hapus($id)
-	{
-		mysqli_query($this->connect, "delete from user where id='$id'");
-	}
+    function edit($id)
+    {
+        $data = mysqli_query($this->connect, "SELECT * FROM user WHERE id='$id' ");
+        $rows = mysqli_fetch_all($data, MYSQLI_ASSOC);
 
-	function edit($id)
-	{
-		$data = mysqli_query($this->connect, "select * from user where id='$id'");
-		$rows = mysqli_fetch_all($data, MYSQLI_ASSOC);
-		return $rows;
-	}
+        return $rows;
+    }
 
-	function update($id, $nama, $alamat, $nohp)
-	{
-		mysqli_query($this->connect, "update user set nama='$nama', alamat='$alamat', nohp='$nohp' where id='$id'");
-	}
+    function update_data($id, $nama, $alamat, $nohp)
+    {
+        mysqli_query($this->connect, "UPDATE `user` SET `nama` = '$nama', `alamat` = '$alamat', `nohp` = '$nohp' WHERE `user`.`id` = '$id'");
+    }
+
+    function hapus_data($id)
+    {
+        mysqli_query($this->connect, "DELETE FROM user WHERE `user`.`id` = '$id' ");
+    }
 }
