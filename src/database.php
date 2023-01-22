@@ -4,14 +4,14 @@ class database
 {
 
 	public $host = "database";
-	public $uname = "root";
+	public $username = "root";
 	public $pass = "password";
 	public $db = "docker_php";
 	public $connect;
 
 	function __construct()
 	{
-		$this->connect = mysqli_connect($this->host, $this->uname, $this->pass);
+		$this->connect = mysqli_connect($this->host, $this->username, $this->pass);
 		mysqli_select_db($this->connect, $this->db);
 	}
 
